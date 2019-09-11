@@ -1,0 +1,15 @@
+[run]
+branch = True
+source = cockroach
+
+[paths]
+source =
+    src/cockroach
+    .tox/*/lib/python*/site-packages/cockroach
+
+[report]
+fail_under = 100
+show_missing = True
+exclude_lines =
+    def main()
+    if __name__ == .__main__.:

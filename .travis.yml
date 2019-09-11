@@ -1,0 +1,48 @@
+---
+language: python
+sudo: required
+dist: xenial
+python: "3.7"
+
+script:
+- tox
+
+stages:
+- lint
+- test
+
+_lint: &lint
+  stage: lint
+  before_install:
+  - pip install tox
+
+_test: &test
+  stage: test
+  before_install:
+  - pip install codecov coverage tox
+  after_success:
+  - coverage combine
+  - codecov
+
+matrix:
+  include:
+  - <<: *lint
+    env: TOXENV=flake8
+  - <<: *lint
+    env: TOXENV=isort
+  - <<: *lint
+    env: TOXENV=mypy
+  - <<: *lint
+    env: TOXENV=black
+  - <<: *lint
+    env: TOXENV=manifest
+  - <<: *lint
+    env: TOXENV=pydocstyle
+  - <<: *lint
+    env: TOXENV=doc8
+  - <<: *lint
+    env: TOXENV=sphinx
+  - <<: *test
+    python: "3.7"
+    env: TOXENV=py37
+...
